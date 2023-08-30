@@ -8,12 +8,11 @@ import toast, { Toaster } from "react-hot-toast";
 
 function SignUp() {
   const router = useRouter();
-  const [user, setuser] = React.useState({
+  const [user, setUser] = React.useState({
     email: "",
     password: "",
     username: "",
   });
-  console.log(user);
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -22,10 +21,10 @@ function SignUp() {
       setLoading(true);
       const response = await axios.post("/api/users/signup", user);
       toast.success("SignUp successfully Done");
-      console.log("Signup success", response.data);
+      console.log("SignUp success", response.data);
       router.push("/login");
     } catch (error: any) {
-      console.log("Signup failed", error.message);
+      console.log("SignUp failed", error.message);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -46,7 +45,6 @@ function SignUp() {
 
   return (
     <>
-      
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl text-indigo-600 font-bold sm:text-3xl">
@@ -66,7 +64,7 @@ function SignUp() {
               <input
                 type="text"
                 value={user.username}
-                onChange={(e) => setuser({ ...user, username: e.target.value })}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
                 className="w-full rounded-lg border-gray-200 text-black p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter Your Username"
               />
@@ -81,7 +79,7 @@ function SignUp() {
               <input
                 type="email"
                 value={user.email}
-                onChange={(e) => setuser({ ...user, email: e.target.value })}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
                 className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter email"
               />
@@ -113,7 +111,7 @@ function SignUp() {
               <input
                 type="password"
                 value={user.password}
-                onChange={(e) => setuser({ ...user, password: e.target.value })}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
                 className="w-full text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                 placeholder="Enter password"
               />
@@ -174,91 +172,3 @@ function SignUp() {
   );
 }
 export default SignUp;
-
-// "use client";
-// import Link from "next/link";
-// import React, { useEffect } from "react";
-// import { useRouter } from "next/navigation";
-// import axios from "axios";
-// import { toast } from "react-hot-toast";
-// import { AiOutlineLoading } from 'react-icons/ai';
-
-// export default function SignUp() {
-//   const router = useRouter();
-//   const [user, setUser] = React.useState({
-//     email: "",
-//     password: "",
-//     username: "",
-//   });
-//   const [buttonDisabled, setButtonDisabled] = React.useState(false);
-//   const [loading, setLoading] = React.useState(false);
-
-//   const onSignUp = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await axios.post("/api/users/signup", user);
-//       console.log("Signup success", response.data);
-//       router.push("/login");
-//     } catch (error: any) {
-//       console.log("SignUp failed", error.message);
-
-//       toast.error(error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (
-//       user.email.length > 0 &&
-//       user.password.length > 0 &&
-//       user.username.length > 0
-//     ) {
-//       setButtonDisabled(false);
-//     } else {
-//       setButtonDisabled(true);
-//     }
-//   }, [user]);
-
-//   return (
-//     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-//       <h1>{loading ? "Processing" : "Signup"}</h1>
-//       <hr />
-//       <label htmlFor="username">username</label>
-//       <input
-//         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-//         id="username"
-//         type="text"
-//         value={user.username}
-//         onChange={(e) => setUser({ ...user, username: e.target.value })}
-//         placeholder="username"
-//       />
-//       <label htmlFor="email">email</label>
-//       <input
-//         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-//         id="email"
-//         type="text"
-//         value={user.email}
-//         onChange={(e) => setUser({ ...user, email: e.target.value })}
-//         placeholder="email"
-//       />
-//       <label htmlFor="password">password</label>
-//       <input
-//         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black"
-//         id="password"
-//         type="password"
-//         value={user.password}
-//         onChange={(e) => setUser({ ...user, password: e.target.value })}
-//         placeholder="password"
-//       />
-//       <button
-//         onClick={onSignUp}
-//         className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
-//       >
-//         {buttonDisabled ? "No signup" : "Signup"}
-//       </button>
-//       <Link href="/login">Visit login page</Link>
-//     </div>
-
-//   );
-// }

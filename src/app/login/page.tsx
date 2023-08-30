@@ -1,16 +1,42 @@
-"use client"
+"use client";
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import { NextResponse } from "next/server";
+import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 function LoginPage() {
+  const router = useRouter();
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [user, setUser] = React.useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
-  const onLogin =async () => {
-    
-  }
+  const onLogin = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/users/login", user);
+      toast.success("Login successfully");
+      console.log(response);
+      router.push("/profile");
+    } catch (error: any) {
+      toast.error("Login Failed");
+      return NextResponse.json({ error: "Failed to login" }, { status: 500 });
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (user.email.length > 0 && user.password.length > 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [user]);
+
   return (
     <>
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -23,11 +49,7 @@ function LoginPage() {
             Get Login you account here
           </p>
 
-          <form
-            action=""
-            className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
-          >
-
+          <div className="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
             <div>
               <label htmlFor="email" className="sr-only">
                 Email
@@ -37,7 +59,7 @@ function LoginPage() {
                 <input
                   type="email"
                   value={user.email}
-                  onChange={(e) => setUser({...user, email: e.target.value})}
+                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                   className="w-full outline-none text-black rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   placeholder="Enter email"
                 />
@@ -71,7 +93,9 @@ function LoginPage() {
                   type="password"
                   className="w-full text-black outline-none rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                   value={user.password}
-                  onChange={(e) => setUser({...user, password: e.target.value})}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
                   placeholder="Enter password"
                 />
 
@@ -101,7 +125,6 @@ function LoginPage() {
             </div>
 
             <button
-              type="submit"
               className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
               onClick={onLogin}
             >
@@ -114,7 +137,7 @@ function LoginPage() {
                 Sign up
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </div>
     </>
